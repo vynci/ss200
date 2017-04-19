@@ -27,19 +27,19 @@ var userApi = require('./controllers/user.js');
 var sensorLogApi = require('./controllers/sensorLog.js');
 var deviceApi = require('./controllers/device.js');
 
-app.post('/user', userApi.createUser);
-app.get('/user', userApi.getAllUsers);
-app.get('/user/:userId/devices', deviceApi.getDeviceByUser);
+app.post('/v1/api/user', userApi.createUser);
+app.get('/v1/api/user', userApi.getAllUsers);
+app.get('/v1/api/user/:userId/devices', deviceApi.getDeviceByUser);
 
-app.post('/history', sensorLogApi.createLog);
-app.get('/history/:deviceId', sensorLogApi.getLogByDeviceId);
-app.get('/history/', sensorLogApi.getAllLogs);
+app.post('/v1/api/history', sensorLogApi.createLog);
+app.get('/v1/api/history/:deviceId', sensorLogApi.getLogByDeviceId);
+app.get('/v1/api/history', sensorLogApi.getAllLogs);
 
-app.post('/device', deviceApi.createDevice);
-app.get('/device/:deviceId', deviceApi.getDeviceById);
-app.get('/device/', deviceApi.getAllDevices);
-app.put('/device/:deviceId', deviceApi.updateDeviceById);
-app.delete('/device/:deviceId', deviceApi.deleteDeviceById);
+app.post('/v1/api/device', deviceApi.createDevice);
+app.get('/v1/api/device/:deviceId', deviceApi.getDeviceById);
+app.get('/v1/api/device/', deviceApi.getAllDevices);
+app.put('/v1/api/device/:deviceId', deviceApi.updateDeviceById);
+app.delete('/v1/api/device/:deviceId', deviceApi.deleteDeviceById);
 
 var server = app.listen(port, function() {
 	console.log("Express server listening on port %d", server.address().port);

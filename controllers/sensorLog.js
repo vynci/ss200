@@ -20,13 +20,29 @@ exports.createLog = function(req, res) {
 }
 
 exports.getAllLogs = function(req, res) {
+	console.log(req.query);
 	SensorLog.find(function(err, user) {
 		res.send(user);
 	});
 }
 
 exports.getLogByDeviceId = (function(req, res) {
-	SensorLog.find({deviceId: req.params.deviceId}, function(error, user) {
+	console.log(req.query);
+	var filter = {deviceId: req.params.deviceId}
+
+	if(req.query.from || req.query.to){
+		if(req.query.from && !req.query.to){
+			filter.createdDate = {"$gte": new Date(req.query.from)};
+		} else if(req.query.to && !req.query.from){
+			filter.createdDate = {"$lt": new Date(req.query.to)};
+		} else {
+			filter.createdDate = {"$gte": new Date(req.query.from), "$lt": new Date(req.query.to)};
+		}		
+	}
+
+	console.log(filter);
+
+	SensorLog.find(filter, function(error, user) {
 		res.send(user);
 	})
 });
