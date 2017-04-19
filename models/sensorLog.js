@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
 
 var sensorLogSchema = new Schema({
     userId: String,
-    createdDate: {type: Date, default: Date.now},
+    timestamp: {type: Date, default: Date.now},
     deviceId : String,
     data: String
 });

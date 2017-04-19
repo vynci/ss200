@@ -26,31 +26,72 @@ exports.createLog = function(req, res) {
 }
 
 exports.getAllLogs = function(req, res) {
-	console.log(req.query);
-	SensorLog.find(function(err, user) {
+	var filter = {};
+	var limit = req.query.limit;
+	var skip = req.query.skip;
+	var sort = req.query.sort || null;		
+
+	if(req.query.from || req.query.to){
+		if(req.query.from && !req.query.to){
+			filter.timestamp = {"$gte": new Date(req.query.from)};
+		} else if(req.query.to && !req.query.from){
+			filter.timestamp = {"$lt": new Date(req.query.to)};
+		} else {
+			filter.timestamp = {"$gte": new Date(req.query.from), "$lt": new Date(req.query.to)};
+		}		
+	}
+
+	if(limit){
+		limit = parseInt(limit);
+	}else{
+		limit = null;
+	}
+
+	if(skip){
+		skip = parseInt(skip);
+	}else{
+		skip = null;
+	}
+
+	SensorLog.find(filter).limit(limit).sort(sort).skip(skip).exec(function(error, user) {
 		obj.data = user;		
 		res.send(obj);
-	});
+	});	
 }
 
 exports.getLogByDeviceId = (function(req, res) {
 	console.log(req.query);
 	var filter = {deviceId: req.params.deviceId}
+	var limit = req.query.limit;
+	var skip = req.query.skip;
+	var sort = req.query.sort || null;	
 
 	if(req.query.from || req.query.to){
 		if(req.query.from && !req.query.to){
-			filter.createdDate = {"$gte": new Date(req.query.from)};
+			filter.timestamp = {"$gte": new Date(req.query.from)};
 		} else if(req.query.to && !req.query.from){
-			filter.createdDate = {"$lt": new Date(req.query.to)};
+			filter.timestamp = {"$lt": new Date(req.query.to)};
 		} else {
-			filter.createdDate = {"$gte": new Date(req.query.from), "$lt": new Date(req.query.to)};
+			filter.timestamp = {"$gte": new Date(req.query.from), "$lt": new Date(req.query.to)};
 		}		
 	}
 
-	SensorLog.find(filter, function(error, user) {
+	if(limit){
+		limit = parseInt(limit);
+	}else{
+		limit = null;
+	}
+
+	if(skip){
+		skip = parseInt(skip);
+	}else{
+		skip = null;
+	}	
+
+	SensorLog.find(filter).limit(limit).sort(sort).skip(skip).exec(function(error, user) {
 		obj.data = user;		
 		res.send(obj);
-	})
+	});
 });
 
 exports.getLogByUserId = (function(req, res) {
