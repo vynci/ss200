@@ -1,5 +1,10 @@
 var SensorLog = require('../models/sensorLog.js');
 
+var obj = {
+	status : 'success',
+	data : ''
+};
+
 exports.createLog = function(req, res) {
 	console.log(req.body);
 	var sensorLog = new SensorLog({
@@ -14,7 +19,8 @@ exports.createLog = function(req, res) {
 		}
 
 		else {
-			return res.json(user);
+			obj.data = user;
+			return res.json(obj);
 		}
 	});
 }
@@ -22,7 +28,8 @@ exports.createLog = function(req, res) {
 exports.getAllLogs = function(req, res) {
 	console.log(req.query);
 	SensorLog.find(function(err, user) {
-		res.send(user);
+		obj.data = user;		
+		res.send(obj);
 	});
 }
 
@@ -40,15 +47,15 @@ exports.getLogByDeviceId = (function(req, res) {
 		}		
 	}
 
-	console.log(filter);
-
 	SensorLog.find(filter, function(error, user) {
-		res.send(user);
+		obj.data = user;		
+		res.send(obj);
 	})
 });
 
 exports.getLogByUserId = (function(req, res) {
 	SensorLog.find({userId: req.params.userId}, function(error, user) {
-		res.send(user);
+		obj.data = user;		
+		res.send(obj);
 	})
 });

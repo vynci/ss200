@@ -1,5 +1,10 @@
 var Device = require('../models/device.js');
 
+var obj = {
+	status : 'success',
+	data : ''
+};
+
 exports.createDevice = function(req, res) {
 	console.log(req.body);
 	var device = new Device({
@@ -15,26 +20,30 @@ exports.createDevice = function(req, res) {
 		}
 
 		else {
-			return res.json(result);
+			obj.data = result;
+			return res.json(obj);
 		}
 	});
 }
 
 exports.getAllDevices = function(req, res) {
 	Device.find(function(err, result) {
-		res.send(result);
+		obj.data = result;
+		res.send(obj);
 	});
 }
 
 exports.getDeviceById = (function(req, res) {
 	Device.find({deviceId: req.params.deviceId}, function(error, result) {
-		res.send(result);
+		obj.data = result;
+		res.send(obj);
 	})
 });
 
 exports.getDeviceByUser = (function(req, res) {
 	Device.find({userId: req.params.userId}, function(error, result) {
-		res.send(result);
+		obj.data = result;
+		res.send(obj);
 	})
 });
 
@@ -46,7 +55,8 @@ exports.updateDeviceById = (function(req, res) {
 		if (error) {
 			return res.json(error);
 		}
-		res.send(result);
+		obj.data = result;
+		res.send(obj);
 	});
 });
 
