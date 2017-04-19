@@ -34,7 +34,7 @@ exports.getAllDevices = function(req, res) {
 }
 
 exports.getDeviceById = (function(req, res) {
-	Device.find({deviceId: req.params.deviceId}, function(error, result) {
+	Device.findOne({deviceId: req.params.deviceId}, function(error, result) {
 		obj.data = result;
 		res.send(obj);
 	})
